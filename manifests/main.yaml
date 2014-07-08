@@ -1,0 +1,119 @@
+application:
+  configuration:
+    input.cookbooks_url: "http://hostname/cookbooks.tar.gz"
+  interfaces:
+    input:
+      cookbooks_url: "bind(workflow#input.cookbooks_url)"
+      # insert input bindings here
+    output:
+      # insert output bindings here
+    manage:
+      # insert action bindings here
+      # example_action: "bind(workflow#actions.example_action)"
+  components:
+    # More info on http://docs.qubell.com/developer/components.html
+    workflow:
+      type: workflow.Instance
+      interfaces:
+        #
+        # More info on
+        #   http://docs.qubell.com/developer/components.html
+        #   http://docs.qubell.com/developer/workflow-instance.html
+        #
+        input:
+          cookbooks_url:
+          #
+          # Add output descriptions
+          #
+          # example_input:
+          #   type: publish-signal(value_type)
+          #   name: "This is an example input description"
+          #
+        result:
+          #
+          # Add output descriptions
+          #
+          # example_output:
+          #   type: publish-signal(value_type)
+          #   name: "This is an example output description"
+          #
+        actions:
+          #
+          # Add actions description
+          #
+          # example_action:
+          #   type: receive-command(input_values => output_value)
+          #   name: "This is an action description"
+          #
+        keypair-store:
+          get-keypair: "send-command(string id => object privateKey)"
+      configuration:
+        configuration.triggers: {}
+        configuration.workflows:
+          # More info on http://docs.qubell.com/developer/workflows.html
+          launch:
+            steps:
+              # Example proviosion step
+              - start_vm: # step name. phase is equal to it by default
+                  # More info on http://docs.qubell.com/developer/steps.html
+                  action: provisionVms # provision action name
+                    # More info:
+                    #   http://docs.qubell.com/actions/compute/contents.html
+                    #   http://docs.qubell.com/actions/logging/provisionVmsWithLogging.html
+                  parameters:
+                    roleName: example # VM role
+                    hardwareId: # AWS instance type
+                      # More info on http://aws.amazon.com/ec2/instance-types/
+                    quantity: 1
+                    retryCount: 1
+                    jcloudsProvider: aws-ec2
+                    jcloudsEndpoint: https://ec2.us-east-1.amazonaws.com
+                    jcloudsRegions: # AWS region
+                    jcloudsNodeNamePrefix: # VM name prefix
+                    vmIdentity: # VM user
+                    imageId: # AWS AMI
+                    ec2SecurityGroup: # AWS security group name
+                  output:
+                    # action output values
+                    # manifest_value: action_output_value
+
+              - example_step:
+                  action: # action name
+                    #
+                    # More info about actions:
+                    # - chefsolo/chefrun
+                    #     http://docs.qubell.com/actions/chef/contents.html
+                    # - execrun
+                    #     http://docs.qubell.com/actions/shell/execrun.html
+                    # - enableLogging
+                    #     http://docs.qubell.com/actions/logging/enableLogging.html
+                    # - disableLogging
+                    #     http://docs.qubell.com/actions/logging/disableLogging.html
+                    # - changeLoggerServer
+                    #     http://docs.qubell.com/actions/logging/changeLoggerServer.html
+                    # - registerLogPath
+                    #     http://docs.qubell.com/actions/logging/registerLogPath.html
+                    # - deregisterLogPath
+                    #     http://docs.qubell.com/actions/logging/deregisterLogPath.html
+                    #
+                  precedingPhases: [ start_vm ] # list of preceding phases
+                  parameters: # Map of action-specific parameters
+                    # More info about parameters: http://docs.qubell.com/developer/parameters.html
+                  output:
+                    # action output values
+                    # manifest_value: action_output_value
+
+            return:
+              #
+              # Workflow output
+              #
+              # example_output:
+              #   value: "This is an example output description"
+              # example_with_variable:
+              #   value: "Cookbooks can be found at {$.cookbook_url}"
+              #
+
+          destroy:
+            steps:
+              - destroy:
+                  action: undeployEnv

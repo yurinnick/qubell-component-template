@@ -1,0 +1,19 @@
+kit:
+  name: # Component name
+  link: # Component homepage
+  applications:
+    # describe your applications
+    #
+    # - name: "Example App 1"
+    #   manifest: "http://url/example_app_1.yaml"
+    # - name: "Example App 2"
+    #   manifest: "http://url/example_app_2.yaml"
+    #
+  provider:
+    # Component contributor description
+    #
+    # name: "Example organization"
+    # link: "http://somewebpage.com"
+    #
+  documentation:
+    overview: # Component description
